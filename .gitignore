@@ -1,0 +1,8 @@
+# Ignore IDE's configuration files
+.idea
+
+# Ignore the /vendor/ directory for people using composer
+/vendor/
+
+# Mac OS X dumps these all over the place.
+.DS_Store
