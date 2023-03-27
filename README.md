@@ -37,23 +37,54 @@ The bindings require the following extensions in order to work properly:
 If you use Composer, these dependencies should be handled automatically. If you install manually, you'll want to make sure that these extensions are available.
 
 ## Usage
-Simple usage looks like:
+
+### Getting Authorization
 
 ```php
 $privateKey = 'you-private-key-path.key';
 $certificate = 'you-certificate-path.crt';
 $clientId = 'you-client-id';
 $clientSecret = 'your-client-secret';
-$scopes = ['cob.read'];
 
 $client = new \Potelo\InterPhp\InterClient($privateKey, $certificate, $clientId, $clientSecret);
-$client->authorize($scopes);
 
+$scopes = ['cob.read'];
+$client->authorize($scopes);
+```
+### `Immediate Charge` API
+
+#### `get` [doc](https://developers.bancointer.com.br/reference/get_cob-txid-1)
+
+```php
 $immediateCharge = $client->immediateChargeApi()->get('your-immediate-charge-txid');
 
 print_r($immediateCharge);
 ```
 
+#### `all` [doc](https://developers.bancointer.com.br/reference/get_cob-1)
+
+```php
+$after = new \DateTime('2023-03-01T00:00:00-03:00');
+$before = new \DateTime('2023-03-23T23:59:00-03:00');
+
+$immediateCharges = $client->immediateChargeApi()->all($after, $before);
+
+print_r($immediateCharges);
+```
+
+Other filters
+
+```php
+$after = new \DateTime('2023-03-01T00:00:00-03:00');
+$before = new \DateTime('2023-03-23T23:59:00-03:00');
+$filters = [
+    'cpf' => '00000000000',
+];
+
+$immediateCharges = $client->immediateChargeApi()->all($after, $before, $filters);
+
+print_r($immediateCharges);
+```
 ## API Documentation
 
 The Banco Inter API documentation can be found [here](https://developers.bancointer.com.br/).

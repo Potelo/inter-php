@@ -16,4 +16,22 @@ class ImmediateChargeApi extends ApiRequest
 
         return json_decode($response->getBody()->getContents());
     }
+
+    /**
+     * @param  \DateTime  $after
+     * @param  \DateTime  $before
+     * @param  array  $filters
+     * @return mixed
+     */
+    public function all(\DateTime $after, \DateTime $before, array $filters = [])
+    {
+        $filters = array_merge($filters, [
+            'inicio' => $after->format('Y-m-d\TH:i:s\-03:00'),
+            'fim' => $before->format('Y-m-d\TH:i:s\-03:00'),
+        ]);
+
+        $response = $this->getApi(self::BASE_PATH . '?' . http_build_query($filters));
+
+        return json_decode($response->getBody()->getContents());
+    }
 }
