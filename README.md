@@ -38,7 +38,7 @@ If you use Composer, these dependencies should be handled automatically. If you 
 
 ## Usage
 
-### Getting Authorization
+### Getting Authorization [doc](https://developers.bancointer.com.br/reference/token-1)
 
 ```php
 $privateKey = 'you-private-key-path.key';
@@ -48,9 +48,17 @@ $clientSecret = 'your-client-secret';
 
 $client = new \Potelo\InterPhp\InterClient($privateKey, $certificate, $clientId, $clientSecret);
 
-$scopes = ['cob.read cob.write'];
+$scopes = ['cob.read'];
 $client->authorize($scopes);
 ```
+
+You can get new token with new scopes using the same client instance:
+
+```php
+$scopes = ['cob.read', 'cob.write'];
+$client->authorize($scopes);
+```
+
 ### `Immediate Charge` API
 
 #### `get` [doc](https://developers.bancointer.com.br/reference/get_cob-txid-1)
@@ -64,9 +72,9 @@ print_r($immediateCharge);
 #### `create` [doc](https://developers.bancointer.com.br/reference/post_cob-1)
 
 ```php
-$secondsToExpiry = 3600;
 $amount = 12.50;
 $pixKey = 'your-pix-key';
+$secondsToExpiry = 3600;
 
 $data = [
     "devedor" => [
@@ -85,7 +93,7 @@ $data = [
     ]
 ];
 
-$immediateCharge = $client->immediateChargeApi()->create($secondsToExpiry, $amount, $pixKey, $data);
+$immediateCharge = $client->immediateChargeApi()->create($pixKey, $amount, $secondsToExpiry, $data);
 
 print_r($immediateCharge);
 ```
