@@ -60,4 +60,35 @@ class ImmediateChargeApi extends ApiRequest
 
         return json_decode($response->getBody()->getContents());
     }
+
+    /**
+     * Create an Immediate Charge with a transaction id.
+     *
+     * @param  string  $txId
+     * @param  string  $key
+     * @param  float  $amount
+     * @param  int  $expiration
+     * @param  array  $data
+     * @return mixed
+     */
+    public function createAs(string $txId, string $key, float $amount, int $expiration, array $data = [])
+    {
+        $options = [
+            'json' => array_merge($data, [
+                'calendario' => [
+                    'expiracao' => number_format($expiration),
+                ],
+                'valor' => [
+                    'original' => number_format($amount, 2, '.', ''),
+                ],
+                'chave' => $key,
+            ]),
+        ];
+
+        print_r(json_encode($options));
+
+        $response = $this->putApi(self::BASE_PATH . $txId, $options);
+
+        return json_decode($response->getBody()->getContents());
+    }
 }

@@ -59,9 +59,11 @@ $scopes = ['cob.read', 'cob.write'];
 $client->authorize($scopes);
 ```
 
-### `Immediate Charge` API
+### `Immediate Charge` Pix API
 
 #### `get` [doc](https://developers.bancointer.com.br/reference/get_cob-txid-1)
+
+Get a Immediate Charge by transaction id.
 
 ```php
 $immediateCharge = $client->immediateChargeApi()->get('your-immediate-charge-txid');
@@ -70,6 +72,8 @@ print_r($immediateCharge);
 ```
 
 #### `create` [doc](https://developers.bancointer.com.br/reference/post_cob-1)
+
+Create a new Immediate Charge.
 
 ```php
 $amount = 12.50;
@@ -98,7 +102,41 @@ $immediateCharge = $client->immediateChargeApi()->create($pixKey, $amount, $seco
 print_r($immediateCharge);
 ```
 
+#### `createAs` [doc](https://developers.bancointer.com.br/reference/put_cob-txid-1)
+
+Create a new Immediate Charge specifying a unique transaction id.
+
+```php
+$txId = 'your-unique-transaction-id';
+$amount = 12.50;
+$pixKey = 'your-pix-key';
+$secondsToExpiry = 3600;
+
+$data = [
+    "devedor" => [
+        "cpf" => "01234567891",
+        "nome" => "John Doe"
+    ],
+    "loc" => [
+        "tipoCob" => "cob"
+    ],
+    "solicitacaoPagador" => " ",
+    "infoAdicionais" => [
+        [
+            "nome" => "Product",
+            "valor" => "cool pajamas"
+        ]
+    ]
+];
+
+$immediateCharge = $client->immediateChargeApi()->createAs($txId, $pixKey, $amount, $secondsToExpiry, $data);
+
+print_r($immediateCharge);
+```
+
 #### `all` [doc](https://developers.bancointer.com.br/reference/get_cob-1)
+
+Get all Immediate Charges in a period.
 
 ```php
 $after = new \DateTime('2023-03-01T00:00:00-03:00');
@@ -109,13 +147,15 @@ $immediateCharges = $client->immediateChargeApi()->all($after, $before);
 print_r($immediateCharges);
 ```
 
-Other filters
+#### Other filters
+
+You can pass an array of filters to the `all` method.
 
 ```php
 $after = new \DateTime('2023-03-01T00:00:00-03:00');
 $before = new \DateTime('2023-03-23T23:59:00-03:00');
 $filters = [
-    'cpf' => '00000000000',
+    'cpf' => '01234567891',
 ];
 
 $immediateCharges = $client->immediateChargeApi()->all($after, $before, $filters);

@@ -20,7 +20,7 @@ class HttpClient
             'cert' => $certificate,
             'ssl_key' => $privateKey,
             'headers' => [
-                'Accept' => '*/*',
+                'Accept' => 'application/json',
                 'Content-Type' => 'application/json',
                 'User-Agent' => self::USER_AGENT,
             ],

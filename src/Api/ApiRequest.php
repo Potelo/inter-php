@@ -25,4 +25,9 @@ class ApiRequest
     {
         return $this->httpClient->request('POST', $path, $options);
     }
+
+    protected function putApi($path, $options = [])
+    {
+        return $this->httpClient->request('PUT', $path, $options);
+    }
 }
