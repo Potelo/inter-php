@@ -34,4 +34,30 @@ class ImmediateChargeApi extends ApiRequest
 
         return json_decode($response->getBody()->getContents());
     }
+
+    /**
+     * @param  string  $key the pix key
+     * @param  float  $amount the amount to charge
+     * @param  int  $expiration the seconds to the charge expire
+     * @param  array  $data the data to be sent
+     * @return mixed
+     */
+    public function create(string $key, float $amount, int $expiration, array $data = [])
+    {
+        $options = [
+            'json' => array_merge($data, [
+                'calendario' => [
+                    'expiracao' => number_format($expiration),
+                ],
+                'valor' => [
+                    'original' => number_format($amount, 2, '.', ''),
+                ],
+                'chave' => $key,
+            ]),
+        ];
+
+        $response = $this->postApi(self::BASE_PATH, $options);
+
+        return json_decode($response->getBody()->getContents());
+    }
 }

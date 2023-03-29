@@ -29,7 +29,7 @@ require_once 'vendor/autoload.php';
 ```
 ## Dependencies
 
-The bindings require the following extensions in order to work properly:
+The library require the following extensions in order to work properly:
 
 -   [`Guzzle`](https://github.com/guzzle/guzzle)
 -   [`json`](https://secure.php.net/manual/en/book.json.php)
@@ -48,7 +48,7 @@ $clientSecret = 'your-client-secret';
 
 $client = new \Potelo\InterPhp\InterClient($privateKey, $certificate, $clientId, $clientSecret);
 
-$scopes = ['cob.read'];
+$scopes = ['cob.read cob.write'];
 $client->authorize($scopes);
 ```
 ### `Immediate Charge` API
@@ -57,6 +57,35 @@ $client->authorize($scopes);
 
 ```php
 $immediateCharge = $client->immediateChargeApi()->get('your-immediate-charge-txid');
+
+print_r($immediateCharge);
+```
+
+#### `create` [doc](https://developers.bancointer.com.br/reference/post_cob-1)
+
+```php
+$secondsToExpiry = 3600;
+$amount = 12.50;
+$pixKey = 'your-pix-key';
+
+$data = [
+    "devedor" => [
+        "cpf" => "01234567891",
+        "nome" => "John Doe"
+    ],
+    "loc" => [
+        "tipoCob" => "cob"
+    ],
+    "solicitacaoPagador" => " ",
+    "infoAdicionais" => [
+        [
+            "nome" => "Product",
+            "valor" => "cool pajamas"
+        ]
+    ]
+];
+
+$immediateCharge = $client->immediateChargeApi()->create($secondsToExpiry, $amount, $pixKey, $data);
 
 print_r($immediateCharge);
 ```

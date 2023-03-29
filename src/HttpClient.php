@@ -21,6 +21,7 @@ class HttpClient
             'ssl_key' => $privateKey,
             'headers' => [
                 'Accept' => '*/*',
+                'Content-Type' => 'application/json',
                 'User-Agent' => self::USER_AGENT,
             ],
         ];
