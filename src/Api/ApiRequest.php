@@ -16,18 +16,46 @@ class ApiRequest
         $this->httpClient = $httpClient;
     }
 
-    protected function getApi($path)
+    /**
+     * @param  string  $path
+     * @return \Psr\Http\Message\ResponseInterface
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    protected function getApi(string $path)
     {
         return $this->httpClient->request('GET', $path);
     }
 
-    protected function postApi($path, $options = [])
+    /**
+     * @param  string  $path
+     * @param  array  $options
+     * @return \Psr\Http\Message\ResponseInterface
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    protected function postApi(string $path, array $options = [])
     {
         return $this->httpClient->request('POST', $path, $options);
     }
 
-    protected function putApi($path, $options = [])
+    /**
+     * @param  string  $path
+     * @param  array  $options
+     * @return \Psr\Http\Message\ResponseInterface
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    protected function putApi(string $path, array $options = [])
     {
         return $this->httpClient->request('PUT', $path, $options);
+    }
+
+    /**
+     * @param  string  $path
+     * @param  array  $options
+     * @return \Psr\Http\Message\ResponseInterface
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    protected function patchApi(string $path, array $options = [])
+    {
+        return $this->httpClient->request('PATCH', $path, $options);
     }
 }

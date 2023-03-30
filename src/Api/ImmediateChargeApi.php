@@ -103,4 +103,23 @@ class ImmediateChargeApi extends ApiRequest
 
         return json_decode($response->getBody()->getContents());
     }
+
+    /**
+     * Update an Immediate Charge.
+     * @see https://developers.bancointer.com.br/reference/patch_cob-txid-1
+     *
+     * @param  string  $txId
+     * @param  array  $data
+     * @return mixed
+     */
+    public function update(string $txId, array $data = [])
+    {
+        $options = [
+            'json' => $data,
+        ];
+
+        $response = $this->patchApi(self::BASE_PATH . $txId, $options);
+
+        return json_decode($response->getBody()->getContents());
+    }
 }

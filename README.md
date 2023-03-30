@@ -59,7 +59,7 @@ $client->authorize($scopes);
 You can get new token with new scopes using the same client instance:
 
 ```php
-$scopes = ['cob.read', 'cob.write'];
+$scopes = ['cob.read', 'cob.write', 'pix.read', 'pix.write'];
 $client->authorize($scopes);
 ```
 
@@ -149,6 +149,18 @@ $before = new \DateTime('2023-03-23T23:59:00-03:00');
 $immediateCharges = $client->immediateChargeApi()->list($after, $before);
 
 print_r($immediateCharges);
+```
+
+#### `update` [doc](https://developers.bancointer.com.br/reference/patch_cob-txid-1)
+
+Update an Immediate Charge.
+
+```php
+$immediateCharge = $client->immediateChargeApi()->update('your-immediate-charge-txid', [
+    'valor' => 22.50
+]);
+
+print_r($immediateCharge);
 ```
 
 #### Other filters
