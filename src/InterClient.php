@@ -34,4 +34,9 @@ class InterClient
     {
         return new Api\ImmediateChargeApi($this->httpClient);
     }
+
+    public function pixApi()
+    {
+        return new Api\PixApi($this->httpClient);
+    }
 }

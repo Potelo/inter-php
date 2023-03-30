@@ -2,11 +2,16 @@
 
 namespace Potelo\InterPhp\Api;
 
+use Datetime;
+
 class ImmediateChargeApi extends ApiRequest
 {
     const BASE_PATH = self::DEFAULT_API_BASE . 'pix/v2/cob/';
 
     /**
+     * Endpoint to get an Immediate Charge.
+     * @see https://developers.bancointer.com.br/reference/get_cob-txid-1
+     *
      * @param  string  $txId
      * @return mixed
      */
@@ -18,12 +23,15 @@ class ImmediateChargeApi extends ApiRequest
     }
 
     /**
+     * Endpoint to get a list of Immediate Charges for a specific period, according to the parameters informed.
+     * @see https://developers.bancointer.com.br/reference/get_cob-1
+     *
      * @param  \DateTime  $after
      * @param  \DateTime  $before
      * @param  array  $filters
      * @return mixed
      */
-    public function all(\DateTime $after, \DateTime $before, array $filters = [])
+    public function list(DateTime $after, DateTime $before, array $filters = [])
     {
         $filters = array_merge($filters, [
             'inicio' => $after->format('Y-m-d\TH:i:s\-03:00'),
@@ -36,10 +44,13 @@ class ImmediateChargeApi extends ApiRequest
     }
 
     /**
+     * Create an Immediate Charge.
+     * @see https://developers.bancointer.com.br/reference/post_cob-1
+     *
      * @param  string  $key the pix key
      * @param  float  $amount the amount to charge
      * @param  int  $expiration the seconds to the charge expire
-     * @param  array  $data the data to be sent
+     * @param  array  $data the others data to be sent
      * @return mixed
      */
     public function create(string $key, float $amount, int $expiration, array $data = [])
@@ -63,6 +74,7 @@ class ImmediateChargeApi extends ApiRequest
 
     /**
      * Create an Immediate Charge with a transaction id.
+     * @see https://developers.bancointer.com.br/reference/put_cob-txid-1
      *
      * @param  string  $txId
      * @param  string  $key
