@@ -38,7 +38,11 @@ If you use Composer, these dependencies should be handled automatically. If you 
 
 ## Usage
 
-### Getting Authorization [doc](https://developers.bancointer.com.br/reference/token-1)
+* [Getting Authorization](#getting-authorization)
+* [Immediate Charge](#immediate-charge)
+* [Pix](#pix)
+
+### <a name="getting-authorization"></a>Getting Authorization [doc](https://developers.bancointer.com.br/reference/token-1)
 
 ```php
 $privateKey = 'you-private-key-path.key';
@@ -59,7 +63,7 @@ $scopes = ['cob.read', 'cob.write'];
 $client->authorize($scopes);
 ```
 
-### `Immediate Charge` Pix API
+### <a name="immediate-charge"></a>`Immediate Charge` Pix API
 
 #### `get` [doc](https://developers.bancointer.com.br/reference/get_cob-txid-1)
 
@@ -163,7 +167,7 @@ $immediateCharges = $client->immediateChargeApi()->list($after, $before, $filter
 print_r($immediateCharges);
 ```
 
-### `Pix` Pix API
+### <a name="pix"></a>`Pix` Pix API
 
 #### `get` [doc](https://developers.bancointer.com.br/reference/get_pix-e2eid-1)
 
