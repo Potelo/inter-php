@@ -39,4 +39,9 @@ class InterClient
     {
         return new Api\PixApi($this->httpClient);
     }
+
+    public function bankSlipApi()
+    {
+        return new Api\BankSlipApi($this->httpClient);
+    }
 }

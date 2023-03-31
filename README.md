@@ -39,6 +39,7 @@ If you use Composer, these dependencies should be handled automatically. If you 
 ## Usage
 
 * [Getting Authorization](#getting-authorization)
+* [Bank Slip](#bank-slip)
 * [Immediate Charge](#immediate-charge)
 * [Pix](#pix)
 
@@ -61,6 +62,87 @@ You can get new token with new scopes using the same client instance:
 ```php
 $scopes = ['cob.read', 'cob.write', 'pix.read', 'pix.write'];
 $client->authorize($scopes);
+```
+
+### <a name="bank-slip"></a>`Bank Slip` Charge API
+
+#### `get` [doc](https://developers.bancointer.com.br/reference/consultarboleto)
+
+Get a Bank Slip.
+
+```php
+$bankSlip = $client->bankSlipApi()->get('bank-slip-our-number');
+
+print_r($bankSlip);
+```
+
+#### `getPdf` [doc](https://developers.bancointer.com.br/reference/descarregarpdfboleto)
+
+Get a Bank Slip PDF.
+
+```php
+$bankSlip = $client->bankSlipApi()->getPdf('bank-slip-our-number');
+
+print_r($bankSlip);
+```
+
+#### `create` [doc](https://developers.bancointer.com.br/reference/incluirboleto-1)
+
+Create a Bank Slip.
+
+```php
+$yorNumber = "your-number";
+$dueDate = new \DateTime('2023-03-31');
+$payer = new Payer("cpf number", "FISICA", "Payer Name", "Address", "Salvador", "BA", "41000000");
+$bankSlip = $this->client->bankSlipApi()->create($yorNumber, 10.90, $dueDate, 0, $payer);
+
+print_r($bankSlip);
+```
+
+#### `list` [doc](https://developers.bancointer.com.br/reference/pesquisarboletos-1)
+
+Get a list of Bank Slips.
+
+```php
+$after = new \DateTime('2023-03-31');
+$before = new \DateTime('2023-03-31');
+$bankSlips = $this->client->bankSlipApi()->list($after, $before);
+
+print_r($bankSlips);
+```
+
+#### Other filters
+
+You can pass an array of filters to the `list` method.
+
+```php
+$after = new \DateTime('2023-03-31');
+$before = new \DateTime('2023-03-31');
+$filters = [
+    'filtrarDataPor' => 'VENCIMENTO',
+];
+$bankSlips = $this->client->bankSlipApi()->list($after, $before, $filters);
+print_r($lista);
+```
+
+#### `summary` [doc](https://developers.bancointer.com.br/reference/consultarsumario-1)
+
+Get a summary of a list of Bank Slips.
+
+```php
+$after = new \DateTime('2023-03-31');
+$before = new \DateTime('2023-03-31');
+$summary = $this->client->bankSlipApi()->summary($after, $before);
+
+print_r($summary);
+```
+
+#### `cancel` [doc](https://developers.bancointer.com.br/reference/baixarboleto)
+
+Cancel a Bank Slip.
+
+```php
+$this->client->bankSlipApi()->cancel('bank-slip-our-number', "cancel-reason");
 ```
 
 ### <a name="immediate-charge"></a>`Immediate Charge` Pix API
@@ -138,19 +220,6 @@ $immediateCharge = $client->immediateChargeApi()->createAs($txId, $pixKey, $amou
 print_r($immediateCharge);
 ```
 
-#### `list` [doc](https://developers.bancointer.com.br/reference/get_cob-1)
-
-Get all Immediate Charges in a period.
-
-```php
-$after = new \DateTime('2023-03-01T00:00:00-03:00');
-$before = new \DateTime('2023-03-23T23:59:00-03:00');
-
-$immediateCharges = $client->immediateChargeApi()->list($after, $before);
-
-print_r($immediateCharges);
-```
-
 #### `update` [doc](https://developers.bancointer.com.br/reference/patch_cob-txid-1)
 
 Update an Immediate Charge.
@@ -163,9 +232,22 @@ $immediateCharge = $client->immediateChargeApi()->update('your-immediate-charge-
 print_r($immediateCharge);
 ```
 
+#### `list` [doc](https://developers.bancointer.com.br/reference/get_cob-1)
+
+Get a list of Immediate Charges in a period.
+
+```php
+$after = new \DateTime('2023-03-01T00:00:00-03:00');
+$before = new \DateTime('2023-03-23T23:59:00-03:00');
+
+$immediateCharges = $client->immediateChargeApi()->list($after, $before);
+
+print_r($immediateCharges);
+```
+
 #### Other filters
 
-You can pass an array of filters to the `all` method.
+You can pass an array of filters to the `list` method.
 
 ```php
 $after = new \DateTime('2023-03-01T00:00:00-03:00');
