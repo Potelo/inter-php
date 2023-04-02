@@ -3,6 +3,10 @@
 The Banco Inter PHP client provides convenient access to the Banco Inter API from
 applications written in the PHP language.
 
+### Other languages
+[![en](https://img.shields.io/badge/lang-en-red.svg)](https://github.com/Potelo/inter-php/blob/main/README.md)
+[![pt-br](https://img.shields.io/badge/lang-pt--br-green.svg)](https://github.com/Potelo/inter-php/blob/main/README.pt-br.md)
+
 ## Requirements
 
 PHP 7.4.0 and later.
@@ -15,7 +19,7 @@ You can install the package via [Composer](http://getcomposer.org/). Run the fol
 composer require potelo/inter-php
 ```
 
-Or simply add it to your composer.json dependences and run composer update:
+Or simply add it to your composer.json dependences and run `composer update`:
 
 ```bash
 "require": {
@@ -34,7 +38,8 @@ The library require the following extensions in order to work properly:
 -   [`Guzzle`](https://github.com/guzzle/guzzle)
 -   [`json`](https://secure.php.net/manual/en/book.json.php)
 
-If you use Composer, these dependencies should be handled automatically. If you install manually, you'll want to make sure that these extensions are available.
+If you use Composer, these dependencies should be handled automatically. If you install manually, you'll want to make
+sure that these extensions are available.
 
 ## Usage
 
@@ -101,7 +106,7 @@ print_r($bankSlip);
 
 #### `list` [doc](https://developers.bancointer.com.br/reference/pesquisarboletos-1)
 
-Get a list of Bank Slips.
+Get a list of Bank Slips in a period.
 
 ```php
 $after = new \DateTime('2023-03-31');
@@ -121,8 +126,10 @@ $before = new \DateTime('2023-03-31');
 $filters = [
     'filtrarDataPor' => 'VENCIMENTO',
 ];
+
 $bankSlips = $this->client->bankSlipApi()->list($after, $before, $filters);
-print_r($lista);
+
+print_r($bankSlips);
 ```
 
 #### `summary` [doc](https://developers.bancointer.com.br/reference/consultarsumario-1)
@@ -142,7 +149,8 @@ print_r($summary);
 Cancel a Bank Slip.
 
 ```php
-$this->client->bankSlipApi()->cancel('bank-slip-our-number', "cancel-reason");
+$cancelReason = "APEDIDODOCLIENTE";
+$this->client->bankSlipApi()->cancel('bank-slip-our-number', $cancelReason);
 ```
 
 ### <a name="immediate-charge"></a>`Immediate Charge` Pix API
@@ -159,12 +167,12 @@ print_r($immediateCharge);
 
 #### `create` [doc](https://developers.bancointer.com.br/reference/post_cob-1)
 
-Create a new Immediate Charge.
+Create an Immediate Charge.
 
 ```php
 $amount = 12.50;
 $pixKey = 'your-pix-key';
-$secondsToExpiry = 3600;
+$expiry = 3600; // seconds
 
 $data = [
     "devedor" => [
@@ -183,14 +191,14 @@ $data = [
     ]
 ];
 
-$immediateCharge = $client->immediateChargeApi()->create($pixKey, $amount, $secondsToExpiry, $data);
+$immediateCharge = $client->immediateChargeApi()->create($pixKey, $amount, $expiry, $data);
 
 print_r($immediateCharge);
 ```
 
 #### `createAs` [doc](https://developers.bancointer.com.br/reference/put_cob-txid-1)
 
-Create a new Immediate Charge specifying a unique transaction id.
+Create an Immediate Charge specifying a unique transaction id.
 
 ```php
 $txId = 'your-unique-transaction-id';
@@ -225,9 +233,10 @@ print_r($immediateCharge);
 Update an Immediate Charge.
 
 ```php
-$immediateCharge = $client->immediateChargeApi()->update('your-immediate-charge-txid', [
-    'valor' => 22.50
-]);
+$data = [
+    "valor" => 22.50
+];
+$immediateCharge = $client->immediateChargeApi()->update('immediate-charge-txid', $data);
 
 print_r($immediateCharge);
 ```
@@ -288,6 +297,8 @@ print_r($pixList);
 
 #### `returnPix` [doc](https://developers.bancointer.com.br/reference/put_pix-e2eid-devolucao-id-1)
 
+Return a Pix.
+
 ```php
 $id = 'your-unique-id';
 $amountToReturn = 12.44;
@@ -297,6 +308,8 @@ print_r($pix);
 ```
 
 #### `getReturnPix` [doc](https://developers.bancointer.com.br/reference/get_pix-e2eid-devolucao-id-1)
+
+Get a Pix return.
 
 ```php
 $id = 'your-unique-id';
